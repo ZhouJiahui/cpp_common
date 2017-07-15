@@ -7,18 +7,18 @@
 #include "../src/blocking_queue.h"
 
 TEST(BlockingQueue, TestSize) {
-	cpply::BlockingQueue<int> queue;
-	ASSERT_EQ(0, queue.Size());
-	queue.Put(1);
-	ASSERT_EQ(1, queue.Size());
-	queue.Put(2);
-	queue.Put(2);
-	ASSERT_EQ(3, queue.Size());
-	queue.Take();	
-	ASSERT_EQ(2, queue.Size());
-	queue.Take();	
-	queue.Take();	
-	ASSERT_EQ(0, queue.Size());
+  cpply::BlockingQueue<int> queue;
+  ASSERT_EQ(0, queue.Size());
+  queue.Put(1);
+  ASSERT_EQ(1, queue.Size());
+  queue.Put(2);
+  queue.Put(2);
+  ASSERT_EQ(3, queue.Size());
+  queue.Take(); 
+  ASSERT_EQ(2, queue.Size());
+  queue.Take(); 
+  queue.Take(); 
+  ASSERT_EQ(0, queue.Size());
 }
 
 TEST(BlockingQueue, TestPut) {
@@ -27,31 +27,31 @@ TEST(BlockingQueue, TestPut) {
   const std::string empty;
   std::string s1(base);
   queue.Put(s1);
-	ASSERT_EQ(base, s1);
+  ASSERT_EQ(base, s1);
   std::string s2(base); 
   queue.Put(std::move(s2));
   ASSERT_EQ(empty, s2);
 }
 
 TEST(BlockingQueue, TestTake) {
-	cpply::BlockingQueue<int> queue;
+  cpply::BlockingQueue<int> queue;
   queue.Put(1);
-	ASSERT_EQ(1, queue.Take());
+  ASSERT_EQ(1, queue.Take());
   queue.Put(2);
   queue.Put(2);
-	ASSERT_EQ(2, queue.Take());
-	ASSERT_EQ(2, queue.Take());
+  ASSERT_EQ(2, queue.Take());
+  ASSERT_EQ(2, queue.Take());
   queue.Put(3);
   queue.Put(3);
   queue.Put(3);
-	ASSERT_EQ(3, queue.Take());
-	ASSERT_EQ(3, queue.Take());
-	ASSERT_EQ(3, queue.Take());
+  ASSERT_EQ(3, queue.Take());
+  ASSERT_EQ(3, queue.Take());
+  ASSERT_EQ(3, queue.Take());
 }
 
 // require : count % w == 0 && count % r == 0
 void RWProcess(int w, int r, int count) {
-	cpply::BlockingQueue<int> queue;
+  cpply::BlockingQueue<int> queue;
   std::atomic<long long> write_sum(0);
   std::atomic<long long> read_sum(0);
   std::thread writer[w];
