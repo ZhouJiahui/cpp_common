@@ -22,9 +22,9 @@ public:
   }
 
   T Take() {
-    std::unique_lock<std::mutex> lock;
+    std::unique_lock<std::mutex> lock(mutex_);
     // avoid spurious wakeup
-    while (!que_.empty()) {
+    while (que_.empty()) {
       not_empty_.wait(lock); 
     }
     T t(std::move(que_.front()));
@@ -33,13 +33,13 @@ public:
   }
 
   void Put(const T& t) {
-    std::unique_lock<std::mutex> lock;
+    std::unique_lock<std::mutex> lock(mutex_);
     que_.push_back(t);
     not_empty_.notify_all(); 
   }
 
   void Put(T&& t) {
-    std::unique_lock<std::mutex> lock;
+    std::unique_lock<std::mutex> lock(mutex_);
     que_.push_back(std::move(t));
     not_empty_.notify_all(); 
   }
