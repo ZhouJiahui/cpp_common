@@ -21,6 +21,18 @@ TEST(BlockingQueue, TestSize) {
   ASSERT_EQ(0, queue.Size());
 }
 
+TEST(BlockingQueue, TestEmpty) {
+  cpply::BlockingQueue<int> queue;
+  ASSERT_EQ(true, queue.Empty());
+  queue.Put(1);
+  queue.Put(1);
+  ASSERT_EQ(false, queue.Empty());
+  queue.Take(); 
+  ASSERT_EQ(false, queue.Empty());
+  queue.Take(); 
+  ASSERT_EQ(true, queue.Empty());
+}
+
 TEST(BlockingQueue, TestPut) {
   cpply::BlockingQueue<std::string> queue;
   const std::string base("Hello world");

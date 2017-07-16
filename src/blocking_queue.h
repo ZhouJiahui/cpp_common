@@ -16,9 +16,14 @@ public:
 
   BlockingQueue(const BlockingQueue&) = delete;
 
-  size_t Size() {
-    std::unique_lock<std::mutex> lock;
+  size_t Size() const {
+    std::unique_lock<std::mutex> lock(mutex_);
     return que_.size();
+  }
+
+  bool Empty() const {
+    std::unique_lock<std::mutex> lock(mutex_);
+    return que_.empty();
   }
 
   T Take() {
@@ -46,7 +51,7 @@ public:
 
 private:
   std::deque<T> que_;
-  std::mutex    mutex_;
+  mutable std::mutex mutex_;
   std::condition_variable not_empty_;
 };
 
