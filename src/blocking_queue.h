@@ -13,16 +13,20 @@ template <typename T>
 class BlockingQueue {
 public:
   BlockingQueue() = default;
+  
+  ~BlockingQueue() = default;
 
   BlockingQueue(const BlockingQueue&) = delete;
 
+  BlockingQueue& operator=(const BlockingQueue&) = delete;
+
   size_t Size() const {
-    std::unique_lock<std::mutex> lock(mutex_);
+    std::lock_guard<std::mutex> lock(mutex_);
     return que_.size();
   }
 
   bool Empty() const {
-    std::unique_lock<std::mutex> lock(mutex_);
+    std::lock_guard<std::mutex> lock(mutex_);
     return que_.empty();
   }
 
